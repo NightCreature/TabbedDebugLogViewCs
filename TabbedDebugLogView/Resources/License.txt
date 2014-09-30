@@ -1,0 +1,1 @@
+Application is provided as is without warrenty, you are free to distribute a copy of this plugin.

@@ -1,0 +1,44 @@
+﻿<UserControl x:Class="DarknessvsLightness.TabbedDebugLogView.TabbedLogControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             Background="{DynamicResource VsBrush.Window}"
+             Foreground="{DynamicResource VsBrush.WindowText}"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="600"
+             Name="MyToolWindow">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0" Name="Tabs">
+            <TabItem Header="Log View Setup">
+                <Grid x:Name="LogViewSetupGrid" Background="#FFE5E5E5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="26"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="65"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0"  Content="Filter String"/>
+                        <TextBox Grid.Column="1" Name="NewFilter" ToolTip="Use a regex to express the filter you want to use, be aware that the match must happen at the start of a sting. Be sure to escape special characters, otherwise they act like C# regex definition" KeyDown="NewFilter_KeyDown"/>
+                        <Button Grid.Column="2" Content="Add Filter" Click="AddFilter" Height="26" VerticalAlignment="Bottom" />
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="20"/>
+                        </Grid.RowDefinitions>
+                        <ListView Grid.Row="0" Name="Filters"/>
+                        <Button Grid.Row="1" Content="Remove Filter" Width="80" HorizontalAlignment="Right"  Click="RemoveFilter"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>
