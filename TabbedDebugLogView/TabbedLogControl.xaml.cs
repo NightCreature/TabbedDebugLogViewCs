@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections;
 using System;
+using System.Windows.Media;
 
 namespace DarknessvsLightness.TabbedDebugLogView
 {
@@ -86,6 +87,7 @@ namespace DarknessvsLightness.TabbedDebugLogView
             textBox.Name = controlBaseName + "TextBox";
             textBox.Text = "";
             textBox.IsReadOnly = true;
+            textBox.Background = Brushes.LightGray;
             scrollViewer.Content = textBox;
             m_textBlocks.Add(textBox);
             m_scrollViews.Add(scrollViewer);
@@ -129,7 +131,7 @@ namespace DarknessvsLightness.TabbedDebugLogView
 
         public void ResetOutputTabs()
         {
-            foreach (TextBlock tb in m_textBlocks)
+            foreach (TextBox tb in m_textBlocks)
             {
                 tb.Text = "";
             }
