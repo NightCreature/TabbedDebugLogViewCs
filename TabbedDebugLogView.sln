@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabbedDebugLogView", "TabbedDebugLogView\TabbedDebugLogView.csproj", "{93C1F983-3623-4DCD-BF0A-985C5CDFC09F}"
 EndProject
 Global
