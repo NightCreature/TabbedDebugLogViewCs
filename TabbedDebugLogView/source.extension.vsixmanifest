@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="b3476850-a371-4b55-b698-3cf5dcc38fd3" Version="1.0.5" Language="en-US" Publisher="Darkness vs Lightness" />
-        <DisplayName>TabbedDebugLogView 1.0.5</DisplayName>
+        <Identity Id="b3476850-a371-4b55-b698-3cf5dcc38fd3" Version="1.0.4" Language="en-US" Publisher="Darkness vs Lightness" />
+        <DisplayName>TabbedDebugLogView</DisplayName>
         <Description>Adds a listenter to OutputDebugString and allows you to filer the output. When a match is found the output is displayed in a seperate log tab where all outputs go that match that filter.</Description>
         <License>License.txt</License>
         <ReleaseNotes>Added Copy functionality to the filters</ReleaseNotes>
