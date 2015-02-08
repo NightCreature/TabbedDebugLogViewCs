@@ -4,6 +4,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell;
 using System.Diagnostics;
 using Microsoft.VisualStudio.Debugger.Interop;
+using System.IO;
 
 namespace DarknessvsLightness.TabbedDebugLogView
 {
@@ -51,14 +52,17 @@ namespace DarknessvsLightness.TabbedDebugLogView
 
         ~TabbedDebugLogToolWindow()
         {
+            Dispose(false);
+        }
+
+        protected void OnClose()
+        {
             IVsDebugger debugService = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellDebugger)) as IVsDebugger;
             if (debugService != null)
             {
                 debugService.UnadviseDebuggerEvents(cookie);
                 debugService.UnadviseDebugEventCallback(this);
-            }
-
-            Dispose(false);
+            }   
         }
 
         public int OnModeChange(DBGMODE dbgmodeNew)
