@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Collections;
 using System;
 using System.Windows.Media;
+using System.IO;
 
 namespace DarknessvsLightness.TabbedDebugLogView
 {
@@ -19,6 +20,24 @@ namespace DarknessvsLightness.TabbedDebugLogView
             m_filters = new ArrayList();
             m_textBlocks = new ArrayList();
             m_scrollViews = new ArrayList();
+
+            //Check if settings file exists if so load it otherwise create one.
+            if (File.Exists("filters.txt"))
+            {
+                StreamReader reader = new StreamReader("filters.txt");
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    //We need to add a new filter to the filter list
+                    ListBoxItem newFilterItem = new ListBoxItem();
+                    newFilterItem.Content = line;
+                    Filters.Items.Add(newFilterItem);
+
+                    AddRegexFilter(line);
+
+                    AddTabToToolwindow(line);
+                }
+            }
         }
 
         private void AddFilter(object sender, RoutedEventArgs e)
@@ -94,7 +113,7 @@ namespace DarknessvsLightness.TabbedDebugLogView
 
             TabItem tabItem = new TabItem();
             tabItem.Name = controlBaseName + "Tab";
-            tabItem.Header = NewFilter.Text.Replace("\\", "");
+            tabItem.Header = controlBaseName;
             tabItem.Content = grid;
             Tabs.Items.Add(tabItem);
         }
@@ -111,6 +130,25 @@ namespace DarknessvsLightness.TabbedDebugLogView
                 //Always do this last it will invalidate Filters.SelectedItem otherwise
                 Filters.Items.Remove(Filters.SelectedItem);
             }
+        }
+
+        private void SaveFilters(object sender, RoutedEventArgs e)
+        {
+            //Check if settings file exists if so load it otherwise create one.
+            FileStream file = new FileStream("filters.txt", FileMode.OpenOrCreate);
+            StreamWriter writer = new StreamWriter(file);
+                
+            foreach( Regex regex in m_filters)
+            {
+                var str = regex.ToString();
+                str = str.Replace("^", "");
+                str = str.Replace(".*", "");
+                writer.WriteLine(str);
+                    
+            }
+
+            writer.Flush();
+            file.Close();
         }
 
         public void ReceivedString(string newDebugString)
