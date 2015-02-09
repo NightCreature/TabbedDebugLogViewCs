@@ -141,8 +141,15 @@ namespace DarknessvsLightness.TabbedDebugLogView
             foreach( Regex regex in m_filters)
             {
                 var str = regex.ToString();
-                str = str.Replace("^", "");
-                str = str.Replace(".*", "");
+                if (str[0] == '^')
+                {
+                    str = str.Remove(0, 1);
+                }
+                int index = str.LastIndexOf(".*");
+                if (index < str.Length)
+                {
+                    str = str.Remove(index);
+                }
                 writer.WriteLine(str);
                     
             }
