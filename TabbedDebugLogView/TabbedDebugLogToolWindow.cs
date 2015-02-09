@@ -45,7 +45,6 @@ namespace DarknessvsLightness.TabbedDebugLogView
             IVsDebugger debugService = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellDebugger)) as IVsDebugger;
             if (debugService != null)
             {
-                rcwHandle = GCHandle.Alloc(debugService, GCHandleType.Normal);
                 debugService.AdviseDebuggerEvents(this, out cookie);
                 debugService.AdviseDebugEventCallback(this);
             }
@@ -58,39 +57,14 @@ namespace DarknessvsLightness.TabbedDebugLogView
 
         public void Dispose()
         {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                // dispose owned managed objects here.
-            }
-
-            if (this.rcwHandle.IsAllocated)
-            {
-                // calling this RCW is safe because we have a GC handle to it.
-                IVsDebugger debugService = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellDebugger)) as IVsDebugger;
-                if (debugService != null)
-                {
-                    debugService.UnadviseDebuggerEvents(cookie);
-                    debugService.UnadviseDebugEventCallback(this);
-                }
-
-                rcwHandle.Free();
-            }
-        }
-
-        protected void OnClose()
-        {
             IVsDebugger debugService = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellDebugger)) as IVsDebugger;
             if (debugService != null)
             {
                 debugService.UnadviseDebuggerEvents(cookie);
                 debugService.UnadviseDebugEventCallback(this);
             }   
+
+            this.Dispose(false);
         }
 
         public int OnModeChange(DBGMODE dbgmodeNew)
@@ -133,7 +107,6 @@ namespace DarknessvsLightness.TabbedDebugLogView
         }
 
         private UInt32 cookie;
-        private GCHandle rcwHandle;
         private DBGMODE m_previousDebuggerMode;
     }
 }
