@@ -55,7 +55,7 @@ namespace DarknessvsLightness.TabbedDebugLogView
             Dispose(false);
         }
 
-        protected void OnClose()
+        public void Dispose()
         {
             IVsDebugger debugService = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsShellDebugger)) as IVsDebugger;
             if (debugService != null)
@@ -63,6 +63,8 @@ namespace DarknessvsLightness.TabbedDebugLogView
                 debugService.UnadviseDebuggerEvents(cookie);
                 debugService.UnadviseDebugEventCallback(this);
             }   
+
+            this.Dispose(false);
         }
 
         public int OnModeChange(DBGMODE dbgmodeNew)

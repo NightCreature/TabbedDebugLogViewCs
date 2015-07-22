@@ -21,10 +21,11 @@ namespace DarknessvsLightness.TabbedDebugLogView
             m_textBlocks = new ArrayList();
             m_scrollViews = new ArrayList();
 
+            m_filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TabbedDebugLog\filters.txt";
             //Check if settings file exists if so load it otherwise create one.
-            if (File.Exists("filters.txt"))
+            if (File.Exists(m_filePath))
             {
-                StreamReader reader = new StreamReader("filters.txt");
+                StreamReader reader = new StreamReader(m_filePath);
                 string line;
                 while ((line = reader.ReadLine()) != null)
                 {
@@ -134,15 +135,32 @@ namespace DarknessvsLightness.TabbedDebugLogView
 
         private void SaveFilters(object sender, RoutedEventArgs e)
         {
+            if (!File.Exists(m_filePath))
+            {
+                string rootFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\TabbedDebugLog\";
+                if (!Directory.Exists(rootFolderPath))
+                {
+                    DirectoryInfo dirInfo = Directory.CreateDirectory(rootFolderPath);
+                }
+            }
             //Check if settings file exists if so load it otherwise create one.
-            FileStream file = new FileStream("filters.txt", FileMode.OpenOrCreate);
+            FileStream file = new FileStream(m_filePath, FileMode.OpenOrCreate);
             StreamWriter writer = new StreamWriter(file);
-                
-            foreach( Regex regex in m_filters)
+
+            Debug.WriteLine("Saving to: {0}", m_filePath);
+
+            foreach ( Regex regex in m_filters)
             {
                 var str = regex.ToString();
-                str = str.Replace("^", "");
-                str = str.Replace(".*", "");
+                if (str[0] == '^')
+                {
+                    str = str.Remove(0, 1);
+                }
+                int index = str.LastIndexOf(".*");
+                if (index < str.Length)
+                {
+                    str = str.Remove(index);
+                }
                 writer.WriteLine(str);
                     
             }
@@ -178,6 +196,7 @@ namespace DarknessvsLightness.TabbedDebugLogView
         private ArrayList m_filters;
         private ArrayList m_textBlocks;
         private ArrayList m_scrollViews;
+        private string m_filePath;
 
         private void NewFilter_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
